@@ -1,2 +1,1 @@
-print("Hello World!")
-print("new message")
+import pygame
