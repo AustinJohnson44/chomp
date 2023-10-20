@@ -21,8 +21,10 @@ class Fish(pygame.sprite.Sprite):
 
     def update(self):
         if self.moving_left:
+            self.image = self.left_image
             self.x -= 2
         elif self.moving_right:
+            self.image = self.right_image
             self.x += 2
         if self.moving_up:
             self.y -= 2
