@@ -19,6 +19,7 @@ seagrass.set_colorkey((0, 0, 0))
 
 my_fish = fish.Fish(200, 200)  # create a new fish
 background = screen.copy()  # makes a second copy of the screen/canvas
+clock = pygame.time.Clock()
 
 
 def draw_background():
@@ -43,6 +44,7 @@ def draw_background():
 draw_background()
 
 while True:
+    # listen for events
     for event in pygame.event.get():
 
         if event.type == pygame.QUIT:
@@ -50,16 +52,30 @@ while True:
             pygame.quit()  # stops process that pygame.init started
             sys.exit()  # uber break - breaks out of everything
 
-        if event.type == pygame.KEYDOWN:
+        elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                my_fish.move_left()
+                my_fish.moving_left = True
             if event.key == pygame.K_RIGHT:
-                my_fish.move_right()
+                my_fish.moving_right = True
             if event.key == pygame.K_UP:
-                my_fish.move_up()
+                my_fish.moving_up = True
             if event.key == pygame.K_DOWN:
-                my_fish.move_down()
-    # update game screen,
+                my_fish.moving_down = True
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                my_fish.moving_left = False
+            if event.key == pygame.K_RIGHT:
+                my_fish.moving_right = False
+            if event.key == pygame.K_UP:
+                my_fish.moving_up = False
+            if event.key == pygame.K_DOWN:
+                my_fish.moving_down = False
+
+    # update game objects
+    my_fish.update()
+
+    # draw game screen
     screen.blit(background, (0, 0))
     my_fish.draw(screen)
     pygame.display.flip()
+    clock.tick(60)  # locks game to 60fps
