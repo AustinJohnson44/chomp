@@ -2,6 +2,7 @@ import pygame
 import sys
 import random
 import fish
+import minnow
 from settings import *
 
 pygame.init()  # tells pygame to look/listen for inputs and events
@@ -18,6 +19,11 @@ seagrass.set_colorkey((0, 0, 0))
 
 
 my_fish = fish.Fish(200, 200)  # create a new fish
+my_minnows = []
+for thing in range(NUM_MINNOWS):
+    my_minnows.append(minnow.Minnow(random.randint(0, SCREEN_WIDTH - TILE_SIZE),
+                                    random.randint(0, WATER_BOTTOM - TILE_SIZE)))
+
 background = screen.copy()  # makes a second copy of the screen/canvas
 clock = pygame.time.Clock()
 
@@ -73,9 +79,15 @@ while True:
 
     # update game objects
     my_fish.update()
+    for my_minnow in my_minnows:
+        my_minnow.update()
 
     # draw game screen
     screen.blit(background, (0, 0))
     my_fish.draw(screen)
+
+    for my_minnow in my_minnows:
+        my_minnow.draw(screen)
+
     pygame.display.flip()
     clock.tick(60)  # locks game to 60fps
