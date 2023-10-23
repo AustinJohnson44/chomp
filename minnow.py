@@ -19,10 +19,26 @@ class Minnow:
         self.moving_down = True
 
     def update(self):
+        if self.moving_left:
+            self.image = self.left_image
+            self.rect.x -= 2
+        elif self.moving_right:
+            self.image = self.right_image
+            self.rect.x += 2
+        if self.moving_up:
+            self.rect.y -= 2
+        elif self.moving_down:
+            self.rect.y += 2
+
+        # make fish stay on screen
         if self.rect.left < 0:
             self.rect.left = 0
+            self.moving_right = True
+            self.moving_left = False
         if self.rect.right > SCREEN_WIDTH:
             self.rect.right = SCREEN_WIDTH
+            self.moving_left = True
+            self.moving_right = False
         if self.rect.top < 0:
             self.rect.top = 0
             self.moving_down = True
