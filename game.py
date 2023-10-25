@@ -16,12 +16,12 @@ sand_top = pygame.image.load("assets/images/sand_top.png").convert()
 sand_top.set_colorkey((0, 0, 0))  # tells blit to ignore transparent pixels and use whatever color is behind them
 seagrass = pygame.image.load("assets/images/seagrass.png").convert()
 seagrass.set_colorkey((0, 0, 0))
-
+score = 0
 
 my_fish = fish.Fish(200, 200)  # create a new fish
 for thing in range(NUM_MINNOWS):
     minnows.add(Minnow(random.randint(0, SCREEN_WIDTH - TILE_SIZE),
-                                    random.randint(0, WATER_BOTTOM - TILE_SIZE)))
+                       random.randint(0, WATER_BOTTOM - TILE_SIZE)))
 
 background = screen.copy()  # makes a second copy of the screen/canvas
 clock = pygame.time.Clock()
@@ -48,9 +48,7 @@ def draw_background():
 
 draw_background()
 
-score = 0
-
-while True:
+while len(minnows)>0:
     # listen for events
     for event in pygame.event.get():
 
@@ -83,16 +81,17 @@ while True:
     minnows.update()
 
     # check for collisions
-    chomped_minnows = pygame.sprite.spritecollide(my_fish, minnows, False)
+    chomped_minnows = pygame.sprite.spritecollide(my_fish, minnows, True)
     score += len(chomped_minnows)
     if len(chomped_minnows) >= 1:
-        print(f"{len(chomped_minnows)} have been chomped!")
+        print(f"{score} minnows have been chomped!")
 
     # draw game screen
     screen.blit(background, (0, 0))
     my_fish.draw(screen)
 
-    minnows.draw()
+    minnows.draw(screen)
 
     pygame.display.flip()
     clock.tick(60)  # locks game to 60fps
+print("You ate all of the minnows!")
