@@ -2,7 +2,7 @@ import pygame
 import sys
 import random
 import fish
-import minnow
+from minnow import Minnow, minnows
 from settings import *
 
 pygame.init()  # tells pygame to look/listen for inputs and events
@@ -19,9 +19,8 @@ seagrass.set_colorkey((0, 0, 0))
 
 
 my_fish = fish.Fish(200, 200)  # create a new fish
-my_minnows = []
 for thing in range(NUM_MINNOWS):
-    my_minnows.append(minnow.Minnow(random.randint(0, SCREEN_WIDTH - TILE_SIZE),
+    minnows.add(Minnow(random.randint(0, SCREEN_WIDTH - TILE_SIZE),
                                     random.randint(0, WATER_BOTTOM - TILE_SIZE)))
 
 background = screen.copy()  # makes a second copy of the screen/canvas
@@ -48,6 +47,8 @@ def draw_background():
 
 
 draw_background()
+
+score = 0
 
 while True:
     # listen for events
@@ -79,15 +80,19 @@ while True:
 
     # update game objects
     my_fish.update()
-    for my_minnow in my_minnows:
-        my_minnow.update()
+    minnows.update()
+
+    # check for collisions
+    chomped_minnows = pygame.sprite.spritecollide(my_fish, minnows, False)
+    score += len(chomped_minnows)
+    if len(chomped_minnows) >= 1:
+        print(f"{len(chomped_minnows)} have been chomped!")
 
     # draw game screen
     screen.blit(background, (0, 0))
     my_fish.draw(screen)
 
-    for my_minnow in my_minnows:
-        my_minnow.draw(screen)
+    minnows.draw()
 
     pygame.display.flip()
     clock.tick(60)  # locks game to 60fps

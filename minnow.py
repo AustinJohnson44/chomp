@@ -2,8 +2,9 @@ import pygame
 from settings import *
 
 
-class Minnow:
+class Minnow(pygame.sprite.Sprite):
     def __init__(self, x, y):
+        super().__init__()  # lets the parent (sprite) do its own initialization
         self.right_image = pygame.image.load("assets/images/minnow.png").convert()
         self.right_image.set_colorkey((0, 0, 0))
 
@@ -50,3 +51,7 @@ class Minnow:
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+
+
+minnows = pygame.sprite.Group()  # groups all objects of class minnows together
+#  can treat the group of minnows as a single minnow
