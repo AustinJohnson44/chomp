@@ -19,9 +19,15 @@ seagrass.set_colorkey((0, 0, 0))
 score = 0
 
 my_fish = fish.Fish(200, 200)  # create a new fish
-for thing in range(NUM_MINNOWS):
-    minnows.add(Minnow(random.randint(0, SCREEN_WIDTH - TILE_SIZE),
-                       random.randint(0, WATER_BOTTOM - TILE_SIZE)))
+#for thing in range(NUM_MINNOWS):
+    #minnows.add(Minnow(random.randint(0, SCREEN_WIDTH - TILE_SIZE),
+                       #random.randint(0, WATER_BOTTOM - TILE_SIZE)))
+my_minnow = Minnow(100, 100)
+my_minnow.moving_up = False
+my_minnow.moving_down = False
+my_minnow.moving_right = False
+my_minnow.moving_left = False
+minnows.add(my_minnow)
 
 background = screen.copy()  # makes a second copy of the screen/canvas
 clock = pygame.time.Clock()
@@ -48,7 +54,7 @@ def draw_background():
 
 draw_background()
 
-while len(minnows)>0:
+while len(minnows) > 0:
     # listen for events
     for event in pygame.event.get():
 
@@ -75,6 +81,9 @@ while len(minnows)>0:
                 my_fish.moving_up = False
             if event.key == pygame.K_DOWN:
                 my_fish.moving_down = False
+        elif event.type == pygame.MOUSEMOTION:
+            (x, y) = pygame.mouse.get_pos()
+            my_minnow.rect.center = (x, y)
 
     # update game objects
     my_fish.update()
